@@ -60,7 +60,7 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/',(req, res) => {
-	res.redirect('/register')
+	res.render('index.ejs')
 })
 
 // for the login form 
