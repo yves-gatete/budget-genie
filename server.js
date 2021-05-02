@@ -13,6 +13,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const cookieParser = require('cookie-parser')
 
 const initializePassport = require('./passport-config')
 
@@ -23,10 +24,27 @@ initializePassport(
 )
 
 
+/*
+app.use(express.favicon());
+app.use(express.cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+
+app.use(express.session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
+*/
+
+
+
+
 // store credentials locally
 const users = [];
 
 app.set('view-engine', 'ejs');
+app.use(cookieParser())
+// app.use(express.session({ secret: 'one piece' }))
 app.use(express.urlencoded({extended: false}))
 
 app.use(flash())
@@ -38,7 +56,6 @@ app.use(session({
 
 //make sure the session persists
 app.use(passport.initialize())
-app.use(express.cookieParser())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
