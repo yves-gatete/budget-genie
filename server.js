@@ -23,22 +23,6 @@ initializePassport(
   id => users.find(user => user.id === id)
 )
 
-
-/*
-app.use(express.favicon());
-app.use(express.cookieParser());
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-
-app.use(express.session({ secret: 'keyboard cat' }));
-app.use(passport.initialize());
-app.use(passport.session());
-*/
-
-
-
-
 // store credentials locally
 const users = [];
 
@@ -60,7 +44,12 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/',(req, res) => {
-	res.render('index.ejs')
+	//redirect to register if not authenticated
+	if(!req.isAuthenticated){
+		res.render('index.ejs')
+	} else {
+		res.redirect('/register')
+	}
 })
 
 // for the login form 
