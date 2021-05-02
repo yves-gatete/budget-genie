@@ -38,6 +38,7 @@ app.use(session({
 
 //make sure the session persists
 app.use(passport.initialize())
+app.use(express.cookieParser())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
