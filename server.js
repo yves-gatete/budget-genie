@@ -14,6 +14,14 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
+// var mongo_uri = 'mongodb://127.0.0.1:27017'
+
+// var mongoose = require('mongoose')
+// mongoose.set('useCreateIndex', true)
+// mongoose
+// 	.connect(mongo_uri, { useUnifiedTopology: true, useNewUrlParser: true })
+// 	.then(() => console.log('Connected'))
+// 	.catch((error) => { throw error; })
 
 const initializePassport = require('./passport-config')
 
