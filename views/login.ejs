@@ -1,18 +1,29 @@
-<h1>Login</h1>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-<% if (messages.error) { %>
-  <%= messages.error %>
-<% } %>
+    <link rel ="stylesheet" href= "registyle.css">
+  </head>
+  <body>
+    <div class="container main" >
+		<h1>Login</h1>
 
-<form action="/login" method="POST">
-  <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-  </div>
-  <button type="submit">Login</button>
-</form>
-<a href="/register">Register</a>
+		<% if (messages.error) { %>
+		  <%= messages.error %>
+		<% } %>
+
+		<form action="/login" method="POST" class="container">
+		  <div>
+		    <label for="email" class="form-label">Email</label>
+		    <input type="email" id="email" name="email" required class="form-control">
+		  </div>
+		  <div>
+		    <label for="password" class="form-label">Password</label>
+		    <input type="password" id="password" name="password" required class="form-control">
+		  </div>
+		  <button id="registerbtn" type="submit" class="btn btn-primary">Login</button>
+		</form>
+		<a href="/register" class="btn btn-link switch">Don't have an account? Register</a>
+	</div>
+  </body>
+</html>

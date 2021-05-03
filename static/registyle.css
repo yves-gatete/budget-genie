@@ -1,0 +1,20 @@
+h1{
+	display: block;
+}
+h2{
+	display: block;
+}
+
+div.main{
+	margin-top: 15%;
+}
+#registerbtn{
+	background-color: #718355;
+	display: block;
+	margin: 20px auto;
+}
+
+a.switch {
+	margin: auto auto;
+	display: block;
+}

@@ -46,6 +46,9 @@ app.use(session({
   saveUninitialized: false
 }))
 
+// use folder for static files
+app.use(express.static(__dirname + '/static'));
+
 //make sure the session persists
 app.use(passport.initialize())
 app.use(passport.session())
