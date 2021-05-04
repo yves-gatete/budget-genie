@@ -14,25 +14,33 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
-// var mongo_uri = 'mongodb://127.0.0.1:27017'
 
-// var mongoose = require('mongoose')
-// mongoose.set('useCreateIndex', true)
-// mongoose
-// 	.connect(mongo_uri, { useUnifiedTopology: true, useNewUrlParser: true })
-// 	.then(() => console.log('Connected'))
-// 	.catch((error) => { throw error; })
+var mongo_uri = process.env.MONGODB_URI;
+var users;
+
+const MongoClient = require('mongodb').MongoClient;
+MongoClient.connect(mongo_uri, (err, database) => {
+  if(err) throw err;
+  db = database;
+  console.log(database);
+  bg = db.db("budget_genie");
+  users = bg.collection("users");
+
+  // Start the app after the db connection is ready
+  app.listen(process.env.PORT || 3000);
+})
+
+
 
 const initializePassport = require('./passport-config')
 
 initializePassport(
   passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
+  email => users.findOne({email: email}).then(user => user), // implement db find
+  id => users.findOne({id: id}).then(user => user) // implement db find
 )
 
-// store credentials locally
-const users = [];
+// get
 
 app.set('view-engine', 'ejs');
 app.use(cookieParser())
@@ -54,10 +62,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
+// home page
 app.get('/',(req, res) => {
 	//redirect to register if not authenticated
 	if(!req.isAuthenticated){
-		res.render('index.ejs')
+		res.render('home.ejs')
 	} else {
 		res.redirect('/register')
 	}
@@ -68,11 +77,24 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs')
 })
 
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
+app.post('/login', checkNotAuthenticated, async (req, res) => {
+	users.findOne({ email: req.body.email}, function (err, user) {
+		if (err) {
+			res.redirect('/login')
+		} if (!user) { 
+			res.redirect('/login') 
+		} else {
+			bcrypt.compare(req.body.password, user.password, function(error, isMatch) {
+				if(error) res.redirect('/login')
+				if(isMatch) {
+					res.render('home.ejs')
+				} else {
+					res.render('login.ejs')
+				}
+			})
+		}
+	})
+})
 
 // for the register form 
 app.get('/register', checkNotAuthenticated, (req, res) => {
@@ -83,18 +105,20 @@ app.post('/register' , checkNotAuthenticated, async (req,res) => {
 	try{
 		// async...use await
 		const hashedPassword = await bcrypt.hash(req.body.password, 10)
-		users.push({
+		// add to db
+		new_user  = {
 	      id: Date.now().toString(),
 	      name: req.body.name,
 	      email: req.body.email,
 	      password: hashedPassword
-  	 })
+  	 	};
+		users.insertOne(new_user);
 		// redirect to the login page
 		res.redirect('/login')
 	} catch{
 		res.redirect('/register') // if it fails
 	}
-	console.log(users)
+	console.log(new_user)
 })
 
 //logout
@@ -120,4 +144,3 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.listen(process.env.PORT || 3000);

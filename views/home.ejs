@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+     <head>
+     	<title></title>
+     </head>
+     <body>
+     	<h1> Welcome to Budget Genie </h1><br>
+     	
+        <div id="form1">
+     	<form onsubmit="Retrieve();return false">
+     		<p> Fill this short form below
+     	    </p>
+     		<p><b>input your income</b><br>
+     		<div>
+     		<input type="text"  name='income' placeholder="income" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"  id="btn" value="start budget"> </div></p>
+        
+
+     		<p> how much of your income are you giving to the following </p>
+
+     		<div id="ifYes" style="display:none">
+     	<div id="alert" class="alerter" > Enter at least one expense </div>
+        </div>
+
+             <table style="width:30%" cellpadding="2">
+             	<tr>
+             		<td> Food </td><td><input type="text" name="Food" placeholder="food" /> </td>
+             	</tr>
+             	<tr>
+             		<td> Rent </td><td><input type="text" name="Rent" placeholder="rent" /> </td>
+             	</tr>
+             	<tr>
+             		<td> Transport</td><td><input type="text" name="Transport" placeholder="transport" /></td>
+             	</tr>
+             	<tr>
+             		<td> Miscellaneous </td><td><input type="text" name="Miscellaneous" placeholder="miscellaneous" /> 
+             		</td>
+             	</tr>
+             	<tr>
+             		<td> Savings</td><td><input type="text" name="Savings" placeholder="savings" /> </td>
+             	</tr>
+
+             	
+             </table>
+     		
+     	</form>
+     </div>
+
+
+     <script>
+     		 
+     		let expense = [0,0,0,0,0]
+     		let expense_name = ["Food", "Rent", "Transport" , "Miscellaneous" , "Savings"]
+     		let count = 0;
+     		let newName =[]
+     		let newExp =[]
+            /*checks if at least one input is filled*/
+     		function Checker(x) {
+     			
+     			for (i=0;i<x.length;i++) {
+     				if ((document.getElementsByName(x[i])[0].value) != "" ) {
+     					count+=1
+     				}
+     			}
+     			if (count < 1) {
+     				document.getElementById("ifYes").style.display = 'block';
+
+     			}
+     			else {
+                     document.getElementById("ifYes").style.display = 'none';
+     			}
+
+     		}
+
+         
+         /*gets values from the expenses user inputs and stores them*/
+     		function Getter(x){
+     			for (i=0;i<x.length;i++) {
+     				if ((document.getElementsByName(x[i])[0].value) != "" || (document.getElementsByName(x[i])[0].value) != 0) {
+     					expense[i] = parseInt(document.getElementsByName(x[i])[0].value)
+     					document.getElementsByName(x[i])[1].value = expense[i];
+     					document.getElementById(x[i]).style.display = 'block';
+     					
+
+     					newName.push(expense_name[i])
+     					newExp.push(document.getElementsByName(x[i])[0].value)
+
+     				}
+     			}
+
+     		}
+
+             /*alternates between which forms to show on screen at a time */
+     		function ScreenChange() {
+     			if (count > 0) {
+     				document.getElementById("form1").style.display = 'none';
+     				document.getElementById("form2").style.display = 'block';
+
+     			}
+     		}
+
+     		function CreateScreenTwo(x){
+     			
+     			document.getElementById("income2").innerHTML = "$" + x;
+     			
+     		
+     		}
+
+
+            function Retrieve() {
+     			let income = document.getElementsByName("income")[0].value
+     			Checker(expense_name);
+     			Getter(expense_name);
+     			alert(expense);
+     			alert(newExp)
+     			alert(newName);
+     			ScreenChange();
+     			CreateScreenTwo(income);
+
+
+     			
+
+     		}
+
+
+
+
+     	</script>
+
+
+
+     <!--Second Screen-->
+     <div id="form2" style="display:none">
+     	 <form>
+     	 	
+     	    <h2> Here is your summary </h2><br>
+     	    <p> Here is your summary so far </p>
+
+     	    
+     	    <table style="width:30%" cellpadding="2">
+             <tr>
+             <th></th>
+             <th></th>
+             <th></th>
+             </tr>
+             <tr>
+              <td>Income</td>
+              <td><div id="income2"></div></td>
+              <td></td>
+             </tr>
+          <tr id="Food" style="display:none">
+          	<td>Food</td>
+          	<td><input type="text" name="Food"/></td>
+          	<td><input type="button" id="exp-btn1" value="log new expense"></td>
+          </tr>
+          <tr id="Rent" style="display:none">
+          	<td>Rent</td>
+          	<td><input type="text" name="Rent"/></td>
+          	<td><input type="button" id="exp-btn2" value="log new expense"></td>
+          </tr>
+          <tr id="Transport" style="display:none">
+          	<td>Transport</td>
+          	<td><input type="text" name="Transport"/></td>
+          	<td><input type="button" id="exp-btn3" value="log new expense"></td>
+          </tr>
+          <tr id="Miscellaneous" style="display:none">
+          	<td>Miscelleanous</td>
+          	<td><input type="text" name="Food"/></td>
+          	<td><input type="button" id="exp-btn4" value="log new expense"></td>
+          </tr>
+          <tr id="Savings" style="display:none">
+          	<td>Savings</td>
+          	<td><input type="text" name="Savings"/></td>
+          	<td><input type="button" id="exp-btn5" value="log new expense"></td>
+          </tr>
+
+            </table>
+
+        
+
+     	 </form>
+
+     </div>
+
+      
+      <!--Third Screen -->
+
+     <div>
+             	 
+
+     </div>
+
+     	
+     </body>
+
+</html>
