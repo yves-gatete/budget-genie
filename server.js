@@ -9,7 +9,11 @@ const express = require('express');
 const app = express();
 //for hashing passwords
 const bcrypt = require('bcrypt')
-const passport = require('passport')
+const
+
+
+
+passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
@@ -36,8 +40,8 @@ const initializePassport = require('./passport-config')
 
 initializePassport(
   passport,
-  email => users.findOne({email: email}).then(user => user), // implement db find
-  id => users.findOne({id: id}).then(user => user) // implement db find
+  email => users.findOne({email: email}).then(user => user), 
+  id => users.findOne({id: id}).then(user => user) 
 )
 
 // get

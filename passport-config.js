@@ -20,7 +20,6 @@ function initialize(passport, getUserByEmail, getUserById){
     } catch (e) {
       return done(e)
     }
-
 	}
 
 	passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
@@ -31,3 +30,5 @@ function initialize(passport, getUserByEmail, getUserById){
 }
 
 module.exports = initialize
+
+

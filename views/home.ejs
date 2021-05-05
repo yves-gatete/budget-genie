@@ -2,26 +2,39 @@
 <html>
      <head>
      	<title></title>
+     	<meta name="viewport" content="width=device-width, initial-scale=1">
+     
+     	<script type="text/javascript" src="calculate.ejs"></script> 
+     	<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+
+     	
+     	<link rel ="stylesheet" href= "home.css">
+     	
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+       
      </head>
      <body>
-     	<h1> Welcome to Budget Genie </h1><br>
+        
+     <h1> Budget Genie </h1><br>
      	
         <div id="form1">
-     	<form onsubmit="Retrieve();return false">
-     		<p> Fill this short form below
-     	    </p>
-     		<p><b>input your income</b><br>
+     	<form>
+     		 <h2>Fill this short form below</h2>
+     	    
+     		<p>input your income<br>
      		<div>
-     		<input type="text"  name='income' placeholder="income" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"  id="btn" value="start budget"> </div></p>
+     		<input type="text"  name='income' placeholder="income" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="Retrieve();return false;" class="button">start budget</button></div></p>
         
 
-     		<p> how much of your income are you giving to the following </p>
+     		<p> how much of your income are you giving to the following?</p>
+     		
+     		<p id="small-info"> leave field empty if you are not budgeting for that category* </p>
 
      		<div id="ifYes" style="display:none">
-     	<div id="alert" class="alerter" > Enter at least one expense </div>
+     	<div id="alert" class="alerter" > input at least one field below* </div>
         </div>
-
-             <table style="width:30%" cellpadding="2">
+            
+             <table class="tab" style="width:30%" cellpadding="2">
              	<tr>
              		<td> Food </td><td><input type="text" name="Food" placeholder="food" /> </td>
              	</tr>
@@ -41,6 +54,7 @@
 
              	
              </table>
+             <input id="total" type="hidden"/>
      		
      	</form>
      </div>
@@ -53,6 +67,7 @@
      		let count = 0;
      		let newName =[]
      		let newExp =[]
+     		let total = 0;
             /*checks if at least one input is filled*/
      		function Checker(x) {
      			
@@ -77,8 +92,11 @@
      			for (i=0;i<x.length;i++) {
      				if ((document.getElementsByName(x[i])[0].value) != "" || (document.getElementsByName(x[i])[0].value) != 0) {
      					expense[i] = parseInt(document.getElementsByName(x[i])[0].value)
+     					total += expense[i]
      					document.getElementsByName(x[i])[1].value = expense[i];
      					document.getElementById(x[i]).style.display = 'block';
+     					document.getElementsByName(x[i])[2].style.display = 'block';
+     					document.getElementsByName(x[i])[3].innerHTML = "$" + expense[i];
      					
 
      					newName.push(expense_name[i])
@@ -86,6 +104,8 @@
 
      				}
      			}
+     			
+
 
      		}
 
@@ -104,17 +124,34 @@
      			
      		
      		}
+     		function sub (a,b){
+     			let res = Number(a) - Number(total)
+     			let result = res.toString() + " more to allocate";
+     			return result
+     		}
+
+     		/*subtracts total budget so far from the income*/
+     		function CalculateRemainder(a,b){
+     			
+     				document.getElementById("remainder").innerHTML = "You still have $" + sub(a,b);
+     			
+
+     		}
 
 
             function Retrieve() {
      			let income = document.getElementsByName("income")[0].value
+     			
+     			
      			Checker(expense_name);
      			Getter(expense_name);
-     			alert(expense);
-     			alert(newExp)
-     			alert(newName);
+     			
      			ScreenChange();
      			CreateScreenTwo(income);
+     			CalculateRemainder(income);
+
+     			
+
 
 
      			
@@ -134,60 +171,235 @@
      	 	
      	    <h2> Here is your summary </h2><br>
      	    <p> Here is your summary so far </p>
+     	    <table class="tab" style="width:20%" cellpadding="1">
+     	    	<tr>
+     	    		<td>Income:</td>
+     	    		<td><div id="income2"></td>
+     	    	</tr>
+
+     	    </table>
+
+
 
      	    
-     	    <table style="width:30%" cellpadding="2">
+     	    <table class="tab" style="width:30%" cellpadding="3">
              <tr>
              <th></th>
              <th></th>
              <th></th>
              </tr>
-             <tr>
-              <td>Income</td>
-              <td><div id="income2"></div></td>
-              <td></td>
-             </tr>
+             
           <tr id="Food" style="display:none">
           	<td>Food</td>
           	<td><input type="text" name="Food"/></td>
-          	<td><input type="button" id="exp-btn1" value="log new expense"></td>
+          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
+          
           <tr id="Rent" style="display:none">
-          	<td>Rent</td>
+
+          	<td>Rent </td>
           	<td><input type="text" name="Rent"/></td>
-          	<td><input type="button" id="exp-btn2" value="log new expense"></td>
+          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
+          
           <tr id="Transport" style="display:none">
           	<td>Transport</td>
           	<td><input type="text" name="Transport"/></td>
-          	<td><input type="button" id="exp-btn3" value="log new expense"></td>
+          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
+          
           <tr id="Miscellaneous" style="display:none">
-          	<td>Miscelleanous</td>
-          	<td><input type="text" name="Food"/></td>
-          	<td><input type="button" id="exp-btn4" value="log new expense"></td>
+          	<td>Miscellanous</td>
+          	<td><input type="text" name="Miscellaneous"/></td>
+          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
+
           <tr id="Savings" style="display:none">
           	<td>Savings</td>
           	<td><input type="text" name="Savings"/></td>
-          	<td><input type="button" id="exp-btn5" value="log new expense"></td>
+          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
 
-            </table>
+            </table> <br>
 
+            <div id="remainder"> </div>
+            <br>
+
+
+           <button class="buttonsecondary" onclick="FetchOne()"> allocate more </button>
         
 
      	 </form>
 
      </div>
+     <script>
+     	/*opens to third screen */
+     	function CreateThirdScreen(){
+     		document.getElementById("form2").style.display = 'none';
+     		document.getElementById("form3").style.display = 'block';
+            
+            
+     	}
+
+
+        /*goes back first page*/
+     	function FetchOne(){
+
+     	}
+
+     </script>
 
       
       <!--Third Screen -->
 
-     <div>
-             	 
+
+     <div id="form3" style="display:none">
+     	<form >
+     		<h2> Add expense </h2>
+     		<div  class="tab" style="width:50%">
+                    <div class="exp" name="Food" style="display:none">
+     			    <table cellpadding="1">
+     	    	    <tr>
+     	    		<td>Food</td>
+     	    		<td><div name="Food"></td>
+     	    	   </tr>
+
+     	          </table>
+     			     
+     				
+     				<div id="reqs1">
+                      <p>add expenses under this category</p>
+                    <button class="button" value="Add" onclick="javascript:add1();return false">Add</button>
+                    <br>
+                    </div>
+                    <div id="save1" style="display:none">
+                    	<br>
+                    <button class="button" value="Save" onclick="Save1();return false"> Save</button>
+                </div>
+                </div>
+
+                <div class="exp" name="Rent" style="display:none">
+     			    <table cellpadding="1">
+     	    	    <tr>
+     	    		<td>Rent</td>
+     	    		<td><div name="Rent"></td>
+     	    	   </tr>
+
+     	          </table>
+     			     
+     				
+     				<div id="reqs2">
+                      <p>add expenses under this category</p>
+                    <button class="button" value="Add" onclick="javascript:add2();return false">Add</button>
+                    <br>
+                    </div>
+                    <div id="save2" style="display:none">
+                    	<br>
+                    <button class="button" value="Save" onclick="Save2();return false"> Save</button>
+                </div>
+                </div>
+
+                <div class="exp" name="Transport"style="display:none">
+     			    <table cellpadding="1">
+     	    	    <tr>
+     	    		<td>Transport</td>
+     	    		<td><div name="Transport"></td>
+     	    	   </tr>
+
+     	          </table>
+     			     
+     				
+     				<div id="reqs3">
+                      <p>add expenses under this category</p>
+                    <button class="button" value="Add" onclick="javascript:add3();return false">Add</button>
+                    <br>
+                    </div>
+                    <div id="save3" style="display:none">
+                    	<br>
+                    <button class="button" value="Save" onclick="Save3();return false"> Save</button>
+                </div>
+                </div>
+                <div class="exp" name="Miscellaneous" style="display:none">
+     			    <table cellpadding="1">
+     	    	    <tr>
+     	    		<td>Miscellaneous</td>
+     	    		<td><div name="Miscellaneous"></td>
+     	    	   </tr>
+
+     	          </table>
+     			     
+     				
+     				<div id="reqs4">
+                      <p>add expenses under this category</p>
+                    <button class="button" value="Add" onclick="javascript:add4();return false">Add</button>
+                    <br>
+                    </div>
+                    <div id="save4" style="display:none">
+                    	<br>
+                    <button class="button" value="Save" onclick="Save4();return false"> Save</button>
+                </div>
+                </div>
+                <div class="exp" name="Savings" style="display:none">
+     			    <table cellpadding="1">
+     	    	    <tr>
+     	    		<td>Savings</td>
+     	    		<td><div name="Savings"></td>
+     	    	   </tr>
+
+     	          </table>
+     			     
+     				
+     				<div id="reqs5">
+                      <p>add expenses under this category</p>
+                    <button class="button" value="Add" onclick="javascript:add5();return false">Add</button>
+                    <br>
+                    </div>
+                    <div id="save5" style="display:none">
+                    	<br>
+                    <button class="button" value="Save" onclick="Save5();return false"> Save</button>
+                  </div>
+
+                </div>
+                    <br>
+                    
+                   
+                    <p> click Generate Graph after adding all expenses*</p>
+
+                   
+                  <div class="save">
+                  <button class="button" onclick="Generate();return False">  Generate Graph </button>
+                 </div>
+
+
+
+     				
+           </div>
+
+
+
+     	</form>
+
+
 
      </div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+     	
+
+     		
+     		
+
 
      	
      </body>

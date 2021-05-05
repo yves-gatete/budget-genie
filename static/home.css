@@ -1,0 +1,184 @@
+              @import url('https://fonts.googleapis.com/css?family=Lato');
+
+           *{
+        font-family: 'Lato', sans-serif;
+        font-size: 16px;
+        line-height: 1.5rem;
+    }
+
+
+
+
+               body{
+        font-family: 'Lato', sans-serif;
+        font-size: 16px;
+        line-height: 1.5rem;
+           }
+
+
+
+
+              form{
+     			text-align: center;
+
+     		}
+     		.tab{
+     			margin-left:auto;
+     			margin-right: auto;
+
+     		}
+     		.exp {
+     			text-align: center;
+     			border-bottom: 5px;
+     		     border:1.5px #C7C7C7;
+                    border-style:solid;
+     			padding-bottom: 15px;
+                    border-radius: 10px;
+                    margin-top:10px;
+                    
+     		}
+     		.alerter {
+     			
+                    text-align: center;
+                    
+                    padding-bottom: 5px;
+                    color:red;
+                   
+                    
+     		}
+               #ifYes{
+                    text-align: center;
+                    color:white;
+                    margin-left:auto;
+                    margin-right: auto;
+                    width:20%;
+
+               }
+               #small-info{
+                    font-size: 12px;
+                    color:grey;
+               }
+     		h1{
+     			text-align:center;
+                    padding-top:20px;
+                    
+                    font-size:24px;
+                    font-weight: 800;
+     		}
+               h2{
+                    text-align:center;
+                    
+                    
+                    font-size:18px;
+                    font-weight: 600;
+
+               }
+               
+                input[type=text] {
+               background-color: #EFEFEF;
+               color:#000000;
+               text-align: left;
+
+                border:none;
+                 }
+
+                 ::placeholder {
+                color: lightgrey;
+                 
+                }
+
+
+                 input[type=button] {
+                  background: #718355;
+                  font-size: 12px;
+                border-radius: 5px;
+                border:none;
+               color: white;
+               padding: 8px 15px;
+               text-align: center;
+             text-decoration: none;
+              display: inline-block;
+                 }
+
+                 input[type=submit] {
+                  background: #718355;
+                  font-size: 12px;
+                border-radius: 5px;
+                border:none;
+               color: white;
+               padding: 8px 15px;
+               text-align: center;
+             text-decoration: none;
+              display: inline-block;
+                 }
+                 
+                  .button{
+  background-color: #869069;
+  color: #ffffff; 
+  padding: 5px 25px;
+  font: 14px;
+  border-radius: 3px;
+  border:none;
+  
+
+  }
+
+  .button:hover {
+    background-color: #5f674b;
+  }
+
+                 .buttonsecondary{
+  background-color: #ffffff;
+  color: #869069; 
+  padding: 5px 25px;
+  font: 14px;
+  border: solid 1px;
+  border-radius: 3px;
+  border-color: 869069
+
+
+  }
+
+
+        .buttonsecondary:hover{
+  background-color: #f4f4f4;
+  color: #869069; 
+  padding: 5px 25px;
+  font: 14px;
+  border-radius: 3px;
+  border-color: 869069
+
+  }
+
+  .button1{
+  background-color: #869069;
+  color: #ffffff; 
+  padding: 3px 18px;
+  font: 8px;
+  border-radius: 3px;
+  border:none;
+
+               
+              display: inline-block;
+
+  }
+
+  .button1:hover {
+    background-color: #5f674b;
+  }
+
+
+
+
+  
+
+       
+
+
+
+
+
+
+
+
+
