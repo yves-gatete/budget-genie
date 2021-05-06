@@ -19,52 +19,95 @@
 
 
               form{
-     			text-align: center;
+          text-align: center;
 
-     		}
-     		.tab{
-     			margin-left:auto;
-     			margin-right: auto;
+        }
+        .tab{
+          margin-left:auto;
+          margin-right: auto;
 
-     		}
-     		.exp {
-     			text-align: center;
-     			border-bottom: 5px;
-     		     border:1.5px #C7C7C7;
+
+        }
+        .exp {
+          text-align: center;
+          border-bottom: 5px;
+             border:1.5px #C7C7C7;
                     border-style:solid;
-     			padding-bottom: 15px;
+          padding-bottom: 15px;
                     border-radius: 10px;
                     margin-top:10px;
                     
-     		}
-     		.alerter {
-     			
+        }
+        .alerter {
+          
                     text-align: center;
                     
                     padding-bottom: 5px;
                     color:red;
                    
                     
-     		}
+        }
+               .aler {
+                    
+                    text-align: center;
+                    
+                    padding-bottom: 5px;
+                    color:blue;
+                   
+                    
+               }
+               .ale {
+                    text-align: center;
+                    
+                    padding-bottom: 5px;
+                    color:red;
+
+               }
+               .ifHigh {
+                    text-align: center;
+                    color:white;
+                    margin-left:auto;
+                    margin-right: auto;
+                    width:38%;
+               }
+               
+
                #ifYes{
                     text-align: center;
                     color:white;
                     margin-left:auto;
                     margin-right: auto;
-                    width:20%;
+                    width:38%;
 
+               }
+               .ifExceed{
+                    text-align: center;
+                    color:white;
+                    margin-left:auto;
+                    margin-right: auto;
+                    width:15%;
+                    font-weight: 200
+
+               }
+               .ifSave{
+                    text-align: center;
+                    color:white;
+                    margin-left:auto;
+                    margin-right: auto;
+                    width:15%;
+                    font-weight: 200
                }
                #small-info{
                     font-size: 12px;
                     color:grey;
                }
-     		h1{
-     			text-align:center;
+        h1{
+          text-align:center;
                     padding-top:20px;
                     
                     font-size:24px;
                     font-weight: 800;
-     		}
+        }
                h2{
                     text-align:center;
                     

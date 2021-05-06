@@ -1,188 +1,236 @@
 <!DOCTYPE html>
 <html>
      <head>
-     	<title></title>
-     	<meta name="viewport" content="width=device-width, initial-scale=1">
-     
-     	<script type="text/javascript" src="calculate.ejs"></script> 
-     	<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     	
-     	<link rel ="stylesheet" href= "home.css">
-     	
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+
+        
+        <link rel="stylesheet" href="home.css">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
        
      </head>
      <body>
         
      <h1> Budget Genie </h1><br>
-     	
-        <div id="form1">
-     	<form>
-     		 <h2>Fill this short form below</h2>
-     	    
-     		<p>input your income<br>
-     		<div>
-     		<input type="text"  name='income' placeholder="income" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="Retrieve();return false;" class="button">start budget</button></div></p>
         
+        <div id="form1">
+        <form>
+             <h2>Fill this short form below</h2>
+             <p>
+             <table class="tab" style="width:30%" cellpadding="2">
+            
+             <tr><td><b>input your income </b></td> <td><input type="text"  name='income' placeholder="income" /></td></tr>
+            </table>
+           </p>
 
-     		<p> how much of your income are you giving to the following?</p>
-     		
-     		<p id="small-info"> leave field empty if you are not budgeting for that category* </p>
+            <p> how much of your income are you giving to the following?</p>
+            
+            <p id="small-info"> leave field empty if you are not budgeting for that category* </p>
 
-     		<div id="ifYes" style="display:none">
-     	<div id="alert" class="alerter" > input at least one field below* </div>
+            <div id="ifYes" style="display:none">
+        <div id="alert" class="alerter" > input at least one field below* </div>
         </div>
+        <input id="summ" type="hidden"/>
             
              <table class="tab" style="width:30%" cellpadding="2">
-             	<tr>
-             		<td> Food </td><td><input type="text" name="Food" placeholder="food" /> </td>
-             	</tr>
-             	<tr>
-             		<td> Rent </td><td><input type="text" name="Rent" placeholder="rent" /> </td>
-             	</tr>
-             	<tr>
-             		<td> Transport</td><td><input type="text" name="Transport" placeholder="transport" /></td>
-             	</tr>
-             	<tr>
-             		<td> Miscellaneous </td><td><input type="text" name="Miscellaneous" placeholder="miscellaneous" /> 
-             		</td>
-             	</tr>
-             	<tr>
-             		<td> Savings</td><td><input type="text" name="Savings" placeholder="savings" /> </td>
-             	</tr>
 
-             	
+                <tr>
+                    <td> Food </td><td><input type="text" name="Food" placeholder="food" /> </td>
+                </tr>
+                <tr>
+                    <td> Rent </td><td><input type="text" name="Rent" placeholder="rent" /> </td>
+                </tr>
+                <tr>
+                    <td> Transport</td><td><input type="text" name="Transport" placeholder="transport" /></td>
+                </tr>
+                <tr>
+                    <td> Miscellaneous </td><td><input type="text" name="Miscellaneous" placeholder="miscellaneous" /> 
+                    </td>
+                </tr>
+                <tr>
+                    <td> Savings</td><td><input type="text" name="Savings" placeholder="savings" /> </td>
+                </tr>
+
+                
              </table>
-             <input id="total" type="hidden"/>
-     		
-     	</form>
+             
+
+             <div class="ifHigh" style="display:none">
+              <div  class="ale" > cannot allocate more than income</div>
+               </div>
+             <br>
+             <div> <button onclick="Retrieve();return false;" class="button">start budget</button> </div>
+            
+        </form>
      </div>
 
 
      <script>
-     		 
-     		let expense = [0,0,0,0,0]
-     		let expense_name = ["Food", "Rent", "Transport" , "Miscellaneous" , "Savings"]
-     		let count = 0;
-     		let newName =[]
-     		let newExp =[]
-     		let total = 0;
+             
+            let expense = [0,0,0,0,0]
+            let expense_name = ["Food", "Rent", "Transport" , "Miscellaneous" , "Savings"]
+            let count = 0;
+            
+            let newName =[]
+            let newExp =[]
+            let total = 0;
             /*checks if at least one input is filled*/
-     		function Checker(x) {
-     			
-     			for (i=0;i<x.length;i++) {
-     				if ((document.getElementsByName(x[i])[0].value) != "" ) {
-     					count+=1
-     				}
-     			}
-     			if (count < 1) {
-     				document.getElementById("ifYes").style.display = 'block';
-
-     			}
-     			else {
+            function Checker(x) {
+                
+                for (i=0;i<x.length;i++) {
+                    if ((document.getElementsByName(x[i])[0].value) != "" ) {
+                        count+=1
+                    }
+                }
+                if (count < 1) {
+                    document.getElementById("ifYes").style.display = 'block';
+                    
+                }
+                else {
                      document.getElementById("ifYes").style.display = 'none';
-     			}
 
-     		}
+                }
+
+            }
 
          
          /*gets values from the expenses user inputs and stores them*/
-     		function Getter(x){
-     			for (i=0;i<x.length;i++) {
-     				if ((document.getElementsByName(x[i])[0].value) != "" || (document.getElementsByName(x[i])[0].value) != 0) {
-     					expense[i] = parseInt(document.getElementsByName(x[i])[0].value)
-     					total += expense[i]
-     					document.getElementsByName(x[i])[1].value = expense[i];
-     					document.getElementById(x[i]).style.display = 'block';
-     					document.getElementsByName(x[i])[2].style.display = 'block';
-     					document.getElementsByName(x[i])[3].innerHTML = "$" + expense[i];
-     					
+            function Getter(x){
+                let tot = 0
+                for (i=0;i<x.length;i++) {
+                    if ((document.getElementsByName(x[i])[0].value) != "" || (document.getElementsByName(x[i])[0].value) != 0) {
+                        expense[i] = parseInt(document.getElementsByName(x[i])[0].value)
+                        tot += expense[i]
+                        document.getElementsByName(x[i])[1].value = expense[i];
+                        document.getElementById(x[i]).style.display = 'block';
+                        document.getElementsByName(x[i])[2].style.display = 'block';
+                        document.getElementsByName(x[i])[3].innerHTML = "$" + expense[i];
+                        
 
-     					newName.push(expense_name[i])
-     					newExp.push(document.getElementsByName(x[i])[0].value)
+                        newName.push(expense_name[i])
+                        newExp.push(document.getElementsByName(x[i])[0].value)
 
-     				}
-     			}
-     			
+                    }
+                    else{
+                        document.getElementById(x[i]).style.display = 'none';
+                        document.getElementsByName(x[i])[2].style.display = 'none';
+                    }
+
+                }
+
+                total = tot
+                document.getElementById("summ").value = total
 
 
-     		}
+            }
+
+
+
 
              /*alternates between which forms to show on screen at a time */
-     		function ScreenChange() {
-     			if (count > 0) {
-     				document.getElementById("form1").style.display = 'none';
-     				document.getElementById("form2").style.display = 'block';
+            function ScreenChange(a) {
+                let go = 0
+                if (Diff(a) < 0) {
+                    go++;
+                }
 
-     			}
-     		}
+                if (count > 0 ) {
+                    if (go < 1) {
+                        document.getElementById("form1").style.display = 'none';
+                    document.getElementById("form2").style.display = 'block';
+                    document.getElementsByClassName("ifHigh")[0].style.display = 'none';
 
-     		function CreateScreenTwo(x){
-     			
-     			document.getElementById("income2").innerHTML = "$" + x;
-     			
-     		
-     		}
-     		function sub (a,b){
-     			let res = Number(a) - Number(total)
-     			let result = res.toString() + " more to allocate";
-     			return result
-     		}
 
-     		/*subtracts total budget so far from the income*/
-     		function CalculateRemainder(a,b){
-     			
-     				document.getElementById("remainder").innerHTML = "You still have $" + sub(a,b);
-     			
+                    }
+                    else {
+                        document.getElementsByClassName("ifHigh")[0].style.display = 'block';
+                    }
+                    
+                }
+                
 
-     		}
 
+            }
+
+            function CreateScreenTwo(x){
+                
+                document.getElementById("income2").innerHTML = "$" + x;
+                
+            
+            }
+            function sub (a,b){
+                let res = Number(a) - Number(total)
+                let result = res.toString() + " more to allocate";
+                return result
+            }
+
+            /*subtracts total budget so far from the income*/
+            function CalculateRemainder(a,b){
+                
+                    document.getElementById("remainder").innerHTML = "You still have $" + sub(a,b);
+                
+
+            }
+
+            function Diff (a,b) {
+                let res = Number(a) - Number(total)
+                return res
+            }
+            
+            function CheckExceed(a) {
+                let res = Number(a) - Number(total)
+                if (res < 0 ) {
+
+                    document.getElementsByClassName("ifHigh")[0].style.display = 'block';
+                }
+                else{
+                    document.getElementsByClassName("ifHigh")[0].style.display = 'none';
+                }
+            }
 
             function Retrieve() {
-     			let income = document.getElementsByName("income")[0].value
-     			
-     			
-     			Checker(expense_name);
-     			Getter(expense_name);
-     			
-     			ScreenChange();
-     			CreateScreenTwo(income);
-     			CalculateRemainder(income);
+                let income = document.getElementsByName("income")[0].value
+                
+                
+                Checker(expense_name);
+                Getter(expense_name);
+                
+                ScreenChange(income);
+                CreateScreenTwo(income);
+                CalculateRemainder(income);
+                
 
-     			
-
-
-
-     			
-
-     		}
+            }
 
 
 
 
-     	</script>
+        </script>
 
 
 
      <!--Second Screen-->
      <div id="form2" style="display:none">
-     	 <form>
-     	 	
-     	    <h2> Here is your summary </h2><br>
-     	    <p> Here is your summary so far </p>
-     	    <table class="tab" style="width:20%" cellpadding="1">
-     	    	<tr>
-     	    		<td>Income:</td>
-     	    		<td><div id="income2"></td>
-     	    	</tr>
+         <form>
+            
+            <h2> Here is your summary </h2><br>
+            
+            <p> Here is your summary so far </p>
+            <table class="tab" style="width:30%" cellpadding="1">
+                <tr>
+                    <td>Income:</td>
+                    <td><div id="income2"></td>
+                </tr>
 
-     	    </table>
+            </table>
 
 
 
-     	    
-     	    <table class="tab" style="width:30%" cellpadding="3">
+            
+            <table class="tab" style="width:35%" cellpadding="3">
              <tr>
              <th></th>
              <th></th>
@@ -190,34 +238,34 @@
              </tr>
              
           <tr id="Food" style="display:none">
-          	<td>Food</td>
-          	<td><input type="text" name="Food"/></td>
-          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
+            <td>Food</td>
+            <td><input type="text" name="Food"/></td>
+            <td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
           
           <tr id="Rent" style="display:none">
 
-          	<td>Rent </td>
-          	<td><input type="text" name="Rent"/></td>
-          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
+            <td>Rent </td>
+            <td><input type="text" name="Rent"/></td>
+            <td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
           
           <tr id="Transport" style="display:none">
-          	<td>Transport</td>
-          	<td><input type="text" name="Transport"/></td>
-          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
+            <td>Transport</td>
+            <td><input type="text" name="Transport"/></td>
+            <td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
           
           <tr id="Miscellaneous" style="display:none">
-          	<td>Miscellanous</td>
-          	<td><input type="text" name="Miscellaneous"/></td>
-          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
+            <td>Miscellanous</td>
+            <td><input type="text" name="Miscellaneous"/></td>
+            <td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
 
           <tr id="Savings" style="display:none">
-          	<td>Savings</td>
-          	<td><input type="text" name="Savings"/></td>
-          	<td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
+            <td>Savings</td>
+            <td><input type="text" name="Savings"/></td>
+            <td><button class="button1" onclick="CreateThirdScreen();return false"> log new expense</button></td>
           </tr>
 
             </table> <br>
@@ -226,26 +274,27 @@
             <br>
 
 
-           <button class="buttonsecondary" onclick="FetchOne()"> allocate more </button>
+           <button class="buttonsecondary" onclick="FetchOne();return false"> allocate more </button>
         
 
-     	 </form>
+         </form>
 
      </div>
      <script>
-     	/*opens to third screen */
-     	function CreateThirdScreen(){
-     		document.getElementById("form2").style.display = 'none';
-     		document.getElementById("form3").style.display = 'block';
+        /*opens to third screen */
+        function CreateThirdScreen(){
+            document.getElementById("form2").style.display = 'none';
+            document.getElementById("form3").style.display = 'block';
             
             
-     	}
+        }
 
 
         /*goes back first page*/
-     	function FetchOne(){
-
-     	}
+        function FetchOne(){
+            document.getElementById("form2").style.display = 'none';
+            document.getElementById("form1").style.display = 'block';
+        }
 
      </script>
 
@@ -254,154 +303,712 @@
 
 
      <div id="form3" style="display:none">
-     	<form >
-     		<h2> Add expense </h2>
-     		<div  class="tab" style="width:50%">
+        <form >
+            <h2> Add expense </h2>
+            <div  class="tab" style="width:50%">
                     <div class="exp" name="Food" style="display:none">
-     			    <table cellpadding="1">
-     	    	    <tr>
-     	    		<td>Food</td>
-     	    		<td><div name="Food"></td>
-     	    	   </tr>
+                    <table cellpadding="1">
+                    <tr>
+                    <td>Food</td>
+                    <td><div name="Food"></td>
+                   </tr>
 
-     	          </table>
-     			     
-     				
-     				<div id="reqs1">
+                  </table>
+                     
+                    
+                    <div id="reqs1">
                       <p>add expenses under this category</p>
-                    <button class="button" value="Add" onclick="javascript:add1();return false">Add</button>
+                    <button class="button" value="Add" onclick="javascript:add1(); return false;">Add</button>
                     <br>
                     </div>
                     <div id="save1" style="display:none">
-                    	<br>
+                        <br>
                     <button class="button" value="Save" onclick="Save1();return false"> Save</button>
                 </div>
+                <br>
+                <div class="ifExceed" style="display:none">
+              <div  class="alerter" > *exceeded budget* </div>
+               </div>
+               <br>
+               <div class="ifSave" style="display:none">
+              <div  class="aler" > expenses saved </div>
+               </div>
+
                 </div>
 
                 <div class="exp" name="Rent" style="display:none">
-     			    <table cellpadding="1">
-     	    	    <tr>
-     	    		<td>Rent</td>
-     	    		<td><div name="Rent"></td>
-     	    	   </tr>
+                    <table cellpadding="1">
+                    <tr>
+                    <td>Rent</td>
+                    <td><div name="Rent"></td>
+                   </tr>
 
-     	          </table>
-     			     
-     				
-     				<div id="reqs2">
+                  </table>
+                     
+                    
+                    <div id="reqs2">
                       <p>add expenses under this category</p>
                     <button class="button" value="Add" onclick="javascript:add2();return false">Add</button>
                     <br>
                     </div>
                     <div id="save2" style="display:none">
-                    	<br>
+                        <br>
                     <button class="button" value="Save" onclick="Save2();return false"> Save</button>
                 </div>
+                <br>
+                <div class="ifExceed" style="display:none">
+              <div  class="alerter" > *exceeded budget* </div>
+               </div>
+               <br>
+               <div class="ifSave" style="display:none">
+              <div  class="aler" > expenses saved </div>
+               </div>
                 </div>
 
                 <div class="exp" name="Transport"style="display:none">
-     			    <table cellpadding="1">
-     	    	    <tr>
-     	    		<td>Transport</td>
-     	    		<td><div name="Transport"></td>
-     	    	   </tr>
+                    <table cellpadding="1">
+                    <tr>
+                    <td>Transport</td>
+                    <td><div name="Transport"></td>
+                   </tr>
 
-     	          </table>
-     			     
-     				
-     				<div id="reqs3">
+                  </table>
+                     
+                    
+                    <div id="reqs3">
                       <p>add expenses under this category</p>
                     <button class="button" value="Add" onclick="javascript:add3();return false">Add</button>
                     <br>
                     </div>
                     <div id="save3" style="display:none">
-                    	<br>
+                        <br>
                     <button class="button" value="Save" onclick="Save3();return false"> Save</button>
                 </div>
+                <br>
+                <div class="ifExceed" style="display:none">
+              <div  class="alerter" > *exceeded budget* </div>
+               </div>
+               <br>
+               <div class="ifSave" style="display:none">
+              <div  class="aler" > expenses saved </div>
+               </div>
                 </div>
                 <div class="exp" name="Miscellaneous" style="display:none">
-     			    <table cellpadding="1">
-     	    	    <tr>
-     	    		<td>Miscellaneous</td>
-     	    		<td><div name="Miscellaneous"></td>
-     	    	   </tr>
+                    <table cellpadding="1">
+                    <tr>
+                    <td>Miscellaneous</td>
+                    <td><div name="Miscellaneous"></td>
+                   </tr>
 
-     	          </table>
-     			     
-     				
-     				<div id="reqs4">
+                  </table>
+                     
+                    
+                    <div id="reqs4">
                       <p>add expenses under this category</p>
                     <button class="button" value="Add" onclick="javascript:add4();return false">Add</button>
                     <br>
                     </div>
                     <div id="save4" style="display:none">
-                    	<br>
+                        <br>
                     <button class="button" value="Save" onclick="Save4();return false"> Save</button>
                 </div>
+                <br>
+                <div class="ifExceed" style="display:none">
+              <div  class="alerter" > *exceeded budget* </div>
+               </div>
+               <br>
+               <div class="ifSave" style="display:none">
+              <div  class="aler" > expenses saved </div>
+               </div>
                 </div>
                 <div class="exp" name="Savings" style="display:none">
-     			    <table cellpadding="1">
-     	    	    <tr>
-     	    		<td>Savings</td>
-     	    		<td><div name="Savings"></td>
-     	    	   </tr>
+                    <table cellpadding="1">
+                    <tr>
+                    <td>Savings</td>
+                    <td><div name="Savings"></td>
+                   </tr>
 
-     	          </table>
-     			     
-     				
-     				<div id="reqs5">
+                  </table>
+                     
+                    
+                    <div id="reqs5">
                       <p>add expenses under this category</p>
                     <button class="button" value="Add" onclick="javascript:add5();return false">Add</button>
                     <br>
                     </div>
                     <div id="save5" style="display:none">
-                    	<br>
+                        <br>
                     <button class="button" value="Save" onclick="Save5();return false"> Save</button>
                   </div>
+                  <br>
+                <div class="ifExceed" style="display:none">
+              <div  class="alerter" > *exceeded budget* </div>
+               </div>
+               <br>
+               <div class="ifSave" style="display:none">
+              <div  class="aler" > expenses saved </div>
+               </div>
 
                 </div>
                     <br>
-                    
-                   
+                    <div style="display:none">
+                    <input type="number" value=0 name="food1">
+                    <input type="number" value=0 name="rent1">
+                    <input type="number" value=0 name="transport1">
+                    <input type="number" value=0 name="miscellaneous1">
+                    <input type="number" value=0 name="savings1">
+                
+                   </div>
                     <p> click Generate Graph after adding all expenses*</p>
 
                    
                   <div class="save">
-                  <button class="button" onclick="Generate();return False">  Generate Graph </button>
+                  <button class="button" type="submit">  Generate Graph </button>
                  </div>
 
 
 
-     				
+                    
            </div>
 
 
 
-     	</form>
+        </form>
 
 
 
      </div>
-
-
-
-
-
-
-
-
-
-
-
+    <script type="text/javascript">
+        let count1 = 0
+    let count2 = 0
+    let count3 = 0
+    let count4 = 0
+    let count5 = 0
+    
+    
+        function removeElement1(e) {
+        var nodes = document.body.getElementsByClassName("someInput1");
+        if (nodes.length == 1) {
+                 document.getElementsByName("food1")[0].value = 0
         
+        }
+        count1--;
+        if (count1 == 0) {
+                   document.getElementById("save1").style.display = 'none';
+           }
+    let button = e.target;
+    let field = button.previousSibling;
+    let div = button.parentElement;
+    let br = button.nextSibling;
+    div.removeChild(button);
+    div.removeChild(field);
+    div.removeChild(br);
+    
+    let allElements = document.getElementById("reqs1");
+    let inputs = allElements.getElementsByTagName("input");
+    for(i=0;i<inputs.length;i++){
+            inputs[i].setAttribute('id', 'reqs1' + (i+1));
+            
+      inputs[i].nextSibling.setAttribute('id', 'reqsr1' + (i+1));
+    }
+  }
+  function add1() {
+           if (document.getElementById("save1").style.display == 'none' ) {
+          document.getElementById("save1").style.display = 'block';
+           }
+           
+          
+          
+    let allElements = document.getElementById("reqs1");
+    let reqs_id = allElements.getElementsByTagName("input").length;
+    
+    reqs_id++;
+    count1 = reqs_id
+    
+    //create textbox
+    let input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "someInput1");
+    input.setAttribute('id', 'reqs1' + reqs_id);
+    input.setAttribute('placeholder' , 'type expense here')
+    
+    let reqs = document.getElementById("reqs1");
+    
+    //create remove button
+    let remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr1' + reqs_id);
+    remove.onclick = function(e) {
+      removeElement1(e);
+      
 
-     	
 
-     		
-     		
+    };
+    remove.setAttribute("class", "buttonsecondary");
+    remove.innerHTML = "Remove";
+    
+    //append elements
+    reqs1.appendChild(input);
+    reqs1.appendChild(remove);
+    let br = document.createElement("br");
+    reqs1.appendChild(br);
+  }
 
 
-     	
+
+
+
+
+
+
+
+
+/*btn 2*/
+
+
+
+
+        function removeElement2(e) {
+       var nodes = document.body.getElementsByClassName("someInput2");
+        if (nodes.length == 1) {
+                 document.getElementsByName("rent1")[0].value = 0
+        
+        }
+        
+        count2--;
+        if (count2 == 0) {
+                   document.getElementById("save2").style.display = 'none';
+           }
+    let button = e.target;
+    let field = button.previousSibling;
+    let div = button.parentElement;
+    let br = button.nextSibling;
+    div.removeChild(button);
+    div.removeChild(field);
+    div.removeChild(br);
+    
+    let allElements = document.getElementById("reqs2");
+    let inputs = allElements.getElementsByTagName("input");
+    for(i=0;i<inputs.length;i++){
+            inputs[i].setAttribute('id', 'reqs2' + (i+1));
+            
+      inputs[i].nextSibling.setAttribute('id', 'reqsr2' + (i+1));
+    }
+  }
+  function add2() {
+          if (document.getElementById("save2").style.display == 'none' ) {
+          document.getElementById("save2").style.display = 'block';
+           }
+          
+          count2++;
+    let allElements = document.getElementById("reqs2");
+    let reqs_id = allElements.getElementsByTagName("input").length;
+    
+    reqs_id++;
+    
+    //create textbox
+    let input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "someInput2");
+    input.setAttribute('id', 'reqs2' + reqs_id);
+    input.setAttribute('placeholder' , 'type expense here')
+    
+    let reqs = document.getElementById("reqs2");
+    
+    //create remove button
+    let remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr2' + reqs_id);
+    remove.onclick = function(e) {
+      removeElement2(e);
+
+
+    };
+    remove.setAttribute("class", "buttonsecondary");
+    remove.innerHTML = "Remove";
+    
+    //append elements
+    reqs2.appendChild(input);
+    reqs2.appendChild(remove);
+    let br = document.createElement("br");
+    reqs2.appendChild(br);
+  }
+
+
+
+
+  /*btn 3*/
+
+
+
+
+        function removeElement3(e) {
+                var nodes = document.body.getElementsByClassName("someInput3");
+        if (nodes.length == 1) {
+                 document.getElementsByName("transport1")[0].value = 0
+        
+        }
+
+
+        count3--;
+        if (count3 == 0) {
+                   document.getElementById("save3").style.display = 'none';
+           }
+    let button = e.target;
+    let field = button.previousSibling;
+    let div = button.parentElement;
+    let br = button.nextSibling;
+    div.removeChild(button);
+    div.removeChild(field);
+    div.removeChild(br);
+    
+    let allElements = document.getElementById("reqs3");
+    let inputs = allElements.getElementsByTagName("input");
+    for(i=0;i<inputs.length;i++){
+            inputs[i].setAttribute('id', 'reqs3' + (i+1));
+            
+      inputs[i].nextSibling.setAttribute('id', 'reqsr3' + (i+1));
+    }
+  }
+  function add3() {
+          if (document.getElementById("save3").style.display == 'none' ) {
+          document.getElementById("save3").style.display = 'block';
+           }
+          
+          count3++;
+    let allElements = document.getElementById("reqs3");
+    let reqs_id = allElements.getElementsByTagName("input").length;
+    
+    reqs_id++;
+    
+    //create textbox
+    let input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "someInput3");
+    input.setAttribute('id', 'reqs3' + reqs_id);
+    input.setAttribute('placeholder' , 'type expense here');
+    
+    let reqs = document.getElementById("reqs3");
+    
+    //create remove button
+    let remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr3' + reqs_id);
+    remove.onclick = function(e) {
+      removeElement3(e);
+
+
+    };
+    remove.setAttribute("class", "buttonsecondary");
+    remove.innerHTML = "Remove";
+    
+    //append elements
+    reqs3.appendChild(input);
+    reqs3.appendChild(remove);
+    let br = document.createElement("br");
+    reqs3.appendChild(br);
+  }
+
+
+
+
+/*btn 4*/
+
+
+
+
+        function removeElement4(e) {
+        var nodes = document.body.getElementsByClassName("someInput4");
+        if (nodes.length == 1) {
+                 document.getElementsByName("miscellaneous1")[0].value = 0
+        
+        }
+        count4--;
+        if (count4 == 0) {
+                   document.getElementById("save4").style.display = 'none';
+           }
+    let button = e.target;
+    let field = button.previousSibling;
+    let div = button.parentElement;
+    let br = button.nextSibling;
+    div.removeChild(button);
+    div.removeChild(field);
+    div.removeChild(br);
+    
+    let allElements = document.getElementById("reqs4");
+    let inputs = allElements.getElementsByTagName("input");
+    for(i=0;i<inputs.length;i++){
+            inputs[i].setAttribute('id', 'reqs4' + (i+1));
+            
+      inputs[i].nextSibling.setAttribute('id', 'reqsr4' + (i+1));
+    }
+  }
+  function add4() {
+          if (document.getElementById("save4").style.display == 'none' ) {
+          document.getElementById("save4").style.display = 'block';
+           }
+          
+          count4++;
+    let allElements = document.getElementById("reqs4");
+    let reqs_id = allElements.getElementsByTagName("input").length;
+    
+    reqs_id++;
+    
+    //create textbox
+    let input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "someInput4");
+    input.setAttribute('id', 'reqs4' + reqs_id);
+    input.setAttribute('placeholder' , 'type expense here');
+    
+    let reqs = document.getElementById("reqs4");
+    
+    //create remove button
+    let remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr4' + reqs_id);
+    remove.onclick = function(e) {
+      removeElement4(e);
+
+
+    };
+    remove.setAttribute("class", "buttonsecondary");
+    remove.innerHTML = "Remove";
+    
+    //append elements
+    reqs4.appendChild(input);
+    reqs4.appendChild(remove);
+    let br = document.createElement("br");
+    reqs4.appendChild(br);
+  }
+
+
+
+
+  
+
+
+/*btn 5*/
+
+
+
+
+
+
+        function removeElement5(e) {
+                var nodes = document.body.getElementsByClassName("someInput5");
+        if (nodes.length == 1) {
+                 document.getElementsByName("savings1")[0].value = 0
+        
+        }
+        count5--;
+        if (count5 == 0) {
+                   document.getElementById("save5").style.display = 'none';
+           }
+    let button = e.target;
+    let field = button.previousSibling;
+    let div = button.parentElement;
+    let br = button.nextSibling;
+    div.removeChild(button);
+    div.removeChild(field);
+    div.removeChild(br);
+    
+    let allElements = document.getElementById("reqs5");
+    let inputs = allElements.getElementsByTagName("input");
+    for(i=0;i<inputs.length;i++){
+            inputs[i].setAttribute('id', 'reqs5' + (i+1));
+            
+      inputs[i].nextSibling.setAttribute('id', 'reqsr5' + (i+1));
+    }
+  }
+  function add5() {
+          if (document.getElementById("save5").style.display == 'none' ) {
+          document.getElementById("save5").style.display = 'block';
+           }
+
+
+          
+          count5++;
+    let allElements = document.getElementById("reqs5");
+    let reqs_id = allElements.getElementsByTagName("input").length;
+    
+    reqs_id++;
+    
+    //create textbox
+    let input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "someInput5");
+    input.setAttribute('id', 'reqs5' + reqs_id);
+    input.setAttribute('placeholder' , 'type expense here');
+    
+    let reqs = document.getElementById("reqs5");
+    
+    //create remove button
+    let remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr5' + reqs_id);
+    remove.onclick = function(e) {
+      removeElement5(e);
+
+
+    };
+    remove.setAttribute("class", "buttonsecondary");
+    remove.innerHTML = "Remove";
+    
+    //append elements
+    reqs5.appendChild(input);
+    reqs5.appendChild(remove);
+    let br = document.createElement("br");
+    reqs5.appendChild(br);
+  }
+
+
+
+
+
+
+
+
+function Save1() {
+        
+      let total = 0
+                var childs = document.body.getElementsByClassName("someInput1");
+          for(var i = 0; i < childs.length; i++) {
+            total = Number(total) + Number(document.getElementsByClassName("someInput1")[i].value)
+            
+          }
+        
+        
+         if (Number(document.getElementsByName("Food")[1].value) >= Number(total) ) {
+                 document.getElementsByClassName("ifExceed")[0].style.display = 'none';
+                 document.getElementsByClassName("ifSave")[0].style.display = 'block';
+        document.getElementsByName("food1")[0].value = total;
+         }
+         else {
+                 document.getElementsByClassName("ifSave")[0].style.display = 'none';
+
+
+             document.getElementsByClassName("ifExceed")[0].style.display = 'block';
+                 document.getElementsByName("food1")[0].value = 0;
+         }
+         
+
+
+   
+}
+
+
+
+
+function Save2() {
+        
+      let total = 0
+                var childs = document.body.getElementsByClassName("someInput2");
+          for(var i = 0; i < childs.length; i++) {
+            total = Number(total) + Number(document.getElementsByClassName("someInput2")[i].value)
+            
+          }
+        
+        
+         if (Number(document.getElementsByName("Rent")[1].value) >= Number(total) ) {
+                 document.getElementsByClassName("ifExceed")[1].style.display = 'none';
+                 document.getElementsByClassName("ifSave")[1].style.display = 'block';
+                 
+        document.getElementsByName("rent1")[0].value = total;
+         }
+         else {
+                 document.getElementsByClassName("ifSave")[1].style.display = 'none';
+             document.getElementsByClassName("ifExceed")[1].style.display = 'block';
+                 document.getElementsByName("rent1")[0].value = 0;
+         }
+         
+
+
+   
+}
+
+
+
+
+function Save3() {
+        
+      let total = 0
+                var childs = document.body.getElementsByClassName("someInput3");
+          for(var i = 0; i < childs.length; i++) {
+            total = Number(total) + Number(document.getElementsByClassName("someInput3")[i].value)
+            
+          }
+        
+        
+         if (Number(document.getElementsByName("Transport")[1].value) >= Number(total) ) {
+                 document.getElementsByClassName("ifExceed")[2].style.display = 'none';
+                 document.getElementsByClassName("ifSave")[2].style.display = 'block';
+                 
+        document.getElementsByName("transport1")[0].value = total;
+         }
+         else {
+             document.getElementsByClassName("ifExceed")[2].style.display = 'block';
+             document.getElementsByClassName("ifSave")[2].style.display = 'none';
+                 document.getElementsByName("transport1")[0].value = 0;
+         }
+         
+
+
+   
+}
+
+
+
+
+function Save4() {
+        
+      let total = 0
+                var childs = document.body.getElementsByClassName("someInput4");
+          for(var i = 0; i < childs.length; i++) {
+            total = Number(total) + Number(document.getElementsByClassName("someInput4")[i].value)
+            
+          }
+        
+        
+         if (Number(document.getElementsByName("Miscellaneous")[1].value) >= Number(total) ) {
+                 document.getElementsByClassName("ifExceed")[3].style.display = 'none';
+                 document.getElementsByClassName("ifSave")[3].style.display = 'block';
+                 
+        document.getElementsByName("miscellaneous1")[0].value = total;
+         }
+         else {
+             document.getElementsByClassName("ifExceed")[3].style.display = 'block';
+             document.getElementsByClassName("ifSave")[3].style.display = 'none';
+                 document.getElementsByName("miscellaneous1")[0].value = 0;
+         }
+         
+
+
+   
+}
+
+
+
+
+function Save5() {
+        
+      let total = 0
+                var childs = document.body.getElementsByClassName("someInput5");
+          for(var i = 0; i < childs.length; i++) {
+            total = Number(total) + Number(document.getElementsByClassName("someInput5")[i].value)
+            
+          }
+        
+        
+         if (Number(document.getElementsByName("Savings")[1].value) >= Number(total) ) {
+                 document.getElementsByClassName("ifExceed")[4].style.display = 'none';
+                 document.getElementsByClassName("ifSave")[4].style.display = 'block';
+                 
+        document.getElementsByName("savings1")[0].value = total;
+         }
+         else {
+             document.getElementsByClassName("ifExceed")[4].style.display = 'block';
+             document.getElementsByClassName("ifSave")[4].style.display = 'none';
+                 document.getElementsByName("savings1")[0].value = 0;
+         }  
+}
+
+    </script>  
      </body>
 
 </html>
