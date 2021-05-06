@@ -11,8 +11,6 @@ const app = express();
 const bcrypt = require('bcrypt')
 const
 
-
-
 passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
@@ -147,4 +145,33 @@ function checkNotAuthenticated(req, res, next) {
   }
   next()
 }
+
+
+//require an https module 
+const https = require("https"); 
+//const express = require("express"); 
+const body_parser = require("body-parser"); 
+const fs = require('fs'); 
+//const app = express(); 
+var html = fs.readFileSync('./views/chart.html');//changed from chart.html 
+app.use(body_parser.urlencoded({extended: true})); 
+app.get("/display", function(req, res){ res.sendFile(__dirname + "/home.ejs"); }); 
+app.post("/display", function(req, resp){ 
+const apikey = "4fb9488043a6d8f20a8cbffd2ab2aa9099933c83"; 
+const url = "https://zenquotes.io/api/random/" + apikey ; 
+//console.log(url); 
+https.get(url, function(response){ 
+response.on("data", function(data){ const quote = JSON.parse(data);
+const q = quote[0].q; 
+const author = quote[0].a; 
+//resp.write("<p >The Quote of the day is: </p><br>"); 
+resp.write("<p style='text-align:center' ><em>" + q + " </em></p><br>"); 
+resp.write("<p style='text-align:center'><em> -" + author + " <e/m></p>"); resp.write(html); 
+//resp.write("<canvas color='red' id='myChart' width='400' height='400'> </canvas>"); //resp.send("<p>"+q+"</p>"); 
+}); }); 
+}); 
+//app.listen(3000, function(){ 
+console.log("App is running on port 3000."); 
+//})
+
 

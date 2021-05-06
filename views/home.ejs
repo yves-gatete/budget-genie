@@ -3,6 +3,7 @@
      <head>
         <title></title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"> </script>
 
         <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
@@ -22,16 +23,16 @@
              <p>
              <table class="tab" style="width:30%" cellpadding="2">
             
-             <tr><td><b>input your income </b></td> <td><input type="text"  name='income' placeholder="income" /></td></tr>
+             <tr><td><b>Input your income </b></td> <td><input type="text"  name='income' placeholder="income" /></td></tr>
             </table>
            </p>
 
-            <p> how much of your income are you giving to the following?</p>
+            <p> How much of your income are you giving to the following?</p>
             
-            <p id="small-info"> leave field empty if you are not budgeting for that category* </p>
+            <p id="small-info"> Leave field empty if you are not budgeting for that category* </p>
 
             <div id="ifYes" style="display:none">
-        <div id="alert" class="alerter" > input at least one field below* </div>
+        <div id="alert" class="alerter" > Input at least one field below* </div>
         </div>
         <input id="summ" type="hidden"/>
             
@@ -303,7 +304,7 @@
 
 
      <div id="form3" style="display:none">
-        <form >
+        <form method="post" action="/display">
             <h2> Add expense </h2>
             <div  class="tab" style="width:50%">
                     <div class="exp" name="Food" style="display:none">
@@ -311,7 +312,7 @@
                     <tr>
                     <td>Food</td>
                     <td><div name="Food"></td>
-                   </tr>
+                   </tr>c
 
                   </table>
                      
@@ -452,18 +453,18 @@
                 </div>
                     <br>
                     <div style="display:none">
-                    <input type="number" value=0 name="food1">
-                    <input type="number" value=0 name="rent1">
-                    <input type="number" value=0 name="transport1">
-                    <input type="number" value=0 name="miscellaneous1">
-                    <input type="number" value=0 name="savings1">
+                    <input type="number" value=0 name="food1" id = "food1">
+                    <input type="number" value=0 name="rent1" id = "rent1">
+                    <input type="number" value=0 name="transport1" id = "transport1">
+                    <input type="number" value=0 name="miscellaneous1" id = "miscellaneous1">
+                    <input type="number" value=0 name="savings1" id = "savings1">
                 
                    </div>
                     <p> click Generate Graph after adding all expenses*</p>
 
                    
                   <div class="save">
-                  <button class="button" type="submit">  Generate Graph </button>
+                  <button class="button" type="submit" onclick="Display();"> Generate Graph </button>
                  </div>
 
 
@@ -471,13 +472,30 @@
                     
            </div>
 
-
-
         </form>
 
+        <!-- Displaying the chart-->
+        <canvas id="canvas" width="300" height="300"></canvas>
 
 
-     </div>
+
+    </div>
+
+    <script type="text/javascript">
+      function Display (){
+        var food1 = document.getElementById("food1").value;
+        var rent = document.getElementById("rent1").value;
+        var transport = document.getElementById("transport1").value;
+        var misc = document.getElementById("miscellaneous1").value;
+        var savings = document.getElementById("savings1").value;
+
+        var data = [food1, rent, transport, misc, savings];
+
+        localStorage.setItem('dataToPass', data);
+
+        }
+    </script>
+
     <script type="text/javascript">
         let count1 = 0
     let count2 = 0
@@ -982,9 +1000,6 @@ function Save4() {
    
 }
 
-
-
-
 function Save5() {
         
       let total = 0
@@ -1008,7 +1023,15 @@ function Save5() {
          }  
 }
 
-    </script>  
-     </body>
+    </script> 
+
+    <!--logout button -->
+    <form action="/logout?_method=DELETE" method="POST">
+        <button class="buttonsecondary" style= "margin-top: 20px; padding: 5px 30px" type="submit">Log Out </button>
+    </form> 
+    
+    </body>
+
+
 
 </html>

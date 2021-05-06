@@ -131,7 +131,7 @@
                 }
 
 
-                 input[type=button] {
+                 /*input[type=button] {
                   background: #718355;
                   font-size: 12px;
                 border-radius: 5px;
@@ -141,9 +141,9 @@
                text-align: center;
              text-decoration: none;
               display: inline-block;
-                 }
+                 }*/
 
-                 input[type=submit] {
+                /* input[type=submit] {
                   background: #718355;
                   font-size: 12px;
                 border-radius: 5px;
@@ -153,7 +153,7 @@
                text-align: center;
              text-decoration: none;
               display: inline-block;
-                 }
+                 }*/
                  
                   .button{
   background-color: #869069;
